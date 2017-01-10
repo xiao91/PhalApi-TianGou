@@ -13,31 +13,33 @@ class Api_Comment extends PhalApi_Api {
 
 	public function getRules() {
         return array(
-            'fromComment' => array(
-                'topicalId' 	=> array('name' => 'topicalId', 'type' => 'int', 'min' => 1, 'require' => true, 'desc' => '主题id'),
+            'addComment' => array(
+                'contentsId' 	=> array('name' => 'contentsId', 'type' => 'int', 'min' => 1, 'require' => true, 'desc' => '评论的内容id'),
+
                 'commentDetail' => array('name' => 'commentDetail', 'require' => true, 'desc' => '评论内容'),
-                'fromUid' 	=> array('name' => 'fromUid', 'require' => true, 'desc' => '评论用户id'),
+
+                'userId' 	=> array('name' => 'userId', 'require' => true, 'desc' => '评论用户id'),
             ),
         );
 	}
 	
 	/**
-	* http://api.phalapi.com/?service=Comment.fromComment&topicalId=1&commentDetail=好看啊！&fromUid=1
-	*
+	* http://localhost/TianGou/Public/?service=Comment.AddComment&contentsId=1&commentDetail=好看啊！&userId=1
+	* 
+	* 添加评论
 	*
 	*/
-	public function fromComment() {
-		$rs = array('code' => 0, 'info' => '', 'commentId' => 0);
+	public function addComment() {
+		$rs = array('code' => 0, 'info' => '');
 
 		$domain = new Domain_Comment();
-		$comment_id = $domain->fromComment($this->topicalId, $this->commentDetail, $this->fromUid);
+		$commentId = $domain->addComment($this->contentsId, $this->commentDetail, $this->userId);
 
-		if ($comment_id > 0) {
-			$rs['commentId'] = $comment_id;
-			$rs['code'] = 10000;
+		$rs['code'] = $commentId;
+
+		if ($commentId > 0) {
             $rs['info'] = '评论成功';
         }else {
-            $rs['code'] = 10001;
             $rs['info'] = '评论失败';
         }
 

@@ -1,12 +1,10 @@
 <?php
 
-class Model_Home extends PhalApi_Model_NotORM {
+class Model_Contents extends PhalApi_Model_NotORM {
 	
 	/**
 	*
 	* 内容
-	* 
-	* 分页查询
 	*
 	*/
 	public function content($type) {
@@ -137,6 +135,38 @@ class Model_Home extends PhalApi_Model_NotORM {
 
 			return $contents;
 		}
+	}
+
+	/**
+	* 点赞：更新+1操作
+	*
+	*
+	*/
+	public function updateGoodCount($contentsId) {
+		 $data = array(
+		 	'goodCount' => new NotORM_Literal("goodCount + 1")
+		 );
+		 
+		 $contentsORM = DI()->notorm->contents;
+		 $row = $contentsORM->where('contentsId', $contentsId)->update($data);
+
+		 return $row;
+	}
+
+	/**
+	* 被踩：更新+1操作
+	*
+	*
+	*/
+	public function updateBadCount($contentsId) {
+		 $data = array(
+		 	'badCount' => new NotORM_Literal("badCount + 1")
+		 );
+		 
+		 $contentsORM = DI()->notorm->contents;
+		 $row = $contentsORM->where('contentsId', $contentsId)->update($data);
+
+		 return $row;
 	}
 
 }

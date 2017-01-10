@@ -2,10 +2,10 @@
 
 class Domain_Comment {
 
-	public function fromComment($topical_id, $comment_detail, $from_uid) {
+	public function addComment($contentsId, $commentDetail, $userId) {
 		$model = new Model_Comment();
-		$comment_id = $model->fromComment($topical_id, $comment_detail, $from_uid);
+		$commentId = $model->addComment($contentsId, $commentDetail, $userId);
 
-		return $comment_id;
+		return $commentId;
 	}
 }

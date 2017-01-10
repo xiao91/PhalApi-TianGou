@@ -24,6 +24,15 @@ Android端App显示：[Android-TianGou](https://github.com/xiao91/Android-TianGo
 <p><img src="https://github.com/xiao91/PhalAPI-TianGou/raw/master/Data/upload_photo.html.png" alt="html文件"></p>
 
 json数据结果：
-<p><img src="https://github.com/xiao91/PhalAPI-TianGou/raw/master/Data/upload_photo.json.png" alt="json数据" /></p>
+<p><img src="https://github.com/xiao91/PhalAPI-TianGou/raw/master/Data/upload_photo.json.png" alt="上传图片json数据" /></p>
+
+**3.点赞**
+
+> http://localhost/TianGou/Public/?service=Contents.UpdateGoodCount&contentsId=1
+
+json数据结果：
+
+<p><img src="https://github.com/xiao91/PhalAPI-TianGou/raw/master/Data/update_good_count.json.png" alt="更新点赞次数json数据" /></p>
+
 
 我的QQ：1693538112
