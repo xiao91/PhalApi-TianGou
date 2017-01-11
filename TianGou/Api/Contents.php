@@ -17,10 +17,9 @@ class Api_Contents extends PhalApi_Api {
             ),
 
             'getMore' => array(
-            	'type' => array('name' => 'type', 'type'=> 'int', 'require' => true, 'default' => '1', 'desc' => '类型'),
+            	'type' => array('name' => 'type', 'type'=> 'int', 'require' => true, 'desc' => '类型'),
 
-            	'currentCount' => array('name' => 'currentCount', 'type'=> 'int', 'require' => true, 'default' => '1', 'desc' => '当前个数'), 
-
+            	'currentCount' => array('name' => 'currentCount', 'type'=> 'int', 'require' => true, 'desc' => '当前个数'), 
             ),
 
             'updateGoodCount' => array(

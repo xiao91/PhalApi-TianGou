@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-01-10 05:02:11
+-- Generation Time: 2017-01-11 15:26:06
 -- 服务器版本： 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -37,16 +37,26 @@ CREATE TABLE `tg_apkinfo` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tg_comment`
+-- 表的结构 `tg_comments`
 --
 
-CREATE TABLE `tg_comment` (
+CREATE TABLE `tg_comments` (
   `commentId` int(11) NOT NULL COMMENT '评论id',
-  `contentsId` int(11) DEFAULT NULL COMMENT '对应的内容id',
-  `commentDetail` varchar(255) DEFAULT '' COMMENT '评论详情',
-  `uid` int(11) DEFAULT NULL COMMENT '评论人id',
+  `contentsId` int(11) NOT NULL COMMENT '对应的内容id',
+  `userId` int(11) NOT NULL COMMENT '评论人id',
+  `commentDetail` varchar(255) NOT NULL DEFAULT '' COMMENT '评论详情',
+  `userGoodCount` int(11) DEFAULT '0' COMMENT '该条内容对应该用户评论被点赞次数',
   `createTime` datetime DEFAULT NULL COMMENT '评论时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `tg_comments`
+--
+
+INSERT INTO `tg_comments` (`commentId`, `contentsId`, `userId`, `commentDetail`, `userGoodCount`, `createTime`) VALUES
+(1, 1, 1, '好看啊！', 1, '2017-01-10 04:40:34'),
+(3, 1, 2, '我评价的是第1条！', 0, '2017-01-11 04:36:08'),
+(4, 1, 2, '再次评论第1条内容！', 0, '2017-01-11 20:46:19');
 
 -- --------------------------------------------------------
 
@@ -73,8 +83,8 @@ CREATE TABLE `tg_contents` (
 --
 
 INSERT INTO `tg_contents` (`contentsId`, `userId`, `imgUrlOrContent`, `contentDesc`, `title`, `type`, `goodCount`, `badCount`, `commentCount`, `shareCount`, `createTime`) VALUES
-(1, 2, 'http://sc3.hao123img.com/data/4c6a238dcea1d1baf171c2fbe3976625_430', '', '改名后运气都变好了', 2, 0, 0, 0, 0, '2017-01-08 21:55:08'),
-(2, 1, '', '老婆在家试穿一件新衣服，问我和儿子漂不漂亮。我回:“嗯，衣服蛮漂亮的。”<br/><br/>　　老婆扭头问儿子:“麻麻漂亮？还是衣服漂亮。”儿子回她:“麻麻漂亮！”<br/><br/>　　老婆撇嘴感叹:“别人生的和自己生的就是不一样！”', '别人生的和自己生的就是不一样', 1, 0, 0, 0, 0, '2017-01-07 14:18:12'),
+(1, 2, 'http://sc3.hao123img.com/data/4c6a238dcea1d1baf171c2fbe3976625_430', '', '改名后运气都变好了', 2, 3, 0, 0, 0, '2017-01-08 21:55:08'),
+(2, 1, '', '老婆在家试穿一件新衣服，问我和儿子漂不漂亮。我回:“嗯，衣服蛮漂亮的。”<br/><br/>　　老婆扭头问儿子:“麻麻漂亮？还是衣服漂亮。”儿子回她:“麻麻漂亮！”<br/><br/>　　老婆撇嘴感叹:“别人生的和自己生的就是不一样！”', '别人生的和自己生的就是不一样', 1, 1, 2, 0, 0, '2017-01-07 14:18:12'),
 (3, 1, '', '刚才那老外（谷歌董事长施密特）一坐下就说：“我来过中国许多次，还从来没有那次像这次这么心情愉快，因为这次我是先去逛了北朝鲜再过来。” 看来幸福感真是比较出来的-_-!', '谷歌董事长说中国很幸福', 1, 0, 0, 0, 0, '2017-01-08 18:15:24'),
 (4, 1, '', '最近女儿期末摸底考试一直不错，今天拿回一张试卷，才考78分，我一看火了：咋这么点分？是不是骄傲了？<br/><br/>　　她还觉得挺委屈的，说：最后让写一篇短文，占了20分，题目是《勤劳的妈妈》，实在不知道怎么写。', '勤劳的妈妈', 1, 0, 0, 0, 0, '2017-01-08 18:17:13'),
 (5, 1, 'http://image.tianjimedia.com/uploadImages/2016/341/57/A72328NXRD35.jpg;http://image.tianjimedia.com/uploadImages/2016/341/15/Q11961Y9Z23Y.jpg;http://image.tianjimedia.com/uploadImages/2016/341/04/5AAK264W4P04.jpg;http://image.tianjimedia.com/uploadImages/2016/341/04/URE6EDXB0V7Q.jpg;http://image.tianjimedia.com/uploadImages/2016/341/06/GNJ22QJ6IJ07.jpg;http://image.tianjimedia.com/uploadImages/2016/341/07/HNWIPUV113D8.jpg;http://image.tianjimedia.com/uploadImages/2016/341/08/4MF020Z6B1WC.jpg;http://image.tianjimedia.com/uploadImages/2016/341/09/E2UL3NS8W077.jpg;http://image.tianjimedia.com/uploadImages/2016/341/11/OB0W28613OMJ.jpg;http://image.tianjimedia.com/uploadImages/2016/341/12/414YV9X3P5E1.jpg;http://image.tianjimedia.com/uploadImages/2016/341/14/6B019OY30I29.jpg;http://image.tianjimedia.com/uploadImages/2016/341/26/07SZKQZRF225.jpg;http://image.tianjimedia.com/uploadImages/2016/341/18/Y07IC51X67HG.jpg;http://image.tianjimedia.com/uploadImages/2016/341/19/1F4GVF6ZC791.jpg;http://image.tianjimedia.com/uploadImages/2016/341/21/L0U419ZMF1K7.jpg;http://image.tianjimedia.com/uploadImages/2016/341/24/IGQ7SISW6216.jpg;', '0', '迷人气质名模姐妹花温泉写真 美图极致诱人', 3, 0, 0, 0, 0, '2017-01-08 18:48:22'),
@@ -85,6 +95,25 @@ INSERT INTO `tg_contents` (`contentsId`, `userId`, `imgUrlOrContent`, `contentDe
 (10, 1, 'http://www.hanhande.com/upload/160105/4182594_174230_1.jpg', '', '正确的穿衣方式', 5, 0, 0, 0, 0, '2017-01-08 19:11:06'),
 (11, 1, 'http://mvideo.spriteapp.cn/video/2017/0105/586dbc6595f15_wpc.mp4', '', '相亲女条件直接明了，疯癫男回应简单粗爆', 6, 0, 0, 0, 0, '2017-01-08 19:14:18'),
 (12, 1, 'http://mvideo.spriteapp.cn/video/2017/0103/586b43c42cbb4_wpc.mp4 ', '', '为什么我们为人越来越小心，为什么我们处事越来越谨慎', 6, 0, 0, 0, 0, '2017-01-08 19:17:24');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tg_followers`
+--
+
+CREATE TABLE `tg_followers` (
+  `followerId` int(11) NOT NULL COMMENT '粉丝id',
+  `userId` int(11) NOT NULL COMMENT '用户id',
+  `uid` int(11) NOT NULL COMMENT '关注的粉丝id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `tg_followers`
+--
+
+INSERT INTO `tg_followers` (`followerId`, `userId`, `uid`) VALUES
+(1, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -111,8 +140,8 @@ CREATE TABLE `tg_user` (
 --
 
 INSERT INTO `tg_user` (`userId`, `username`, `userTruthName`, `password`, `userAge`, `userPhone`, `userEmail`, `userSex`, `userQQ`, `userPhoto`, `createTime`) VALUES
-(1, 'tiangou', '', '202cb962ac59075b964b07152d234b70', '', '', '', '', '', 'tiangou/image/20170110/05373639401792492.jpg', '2017-01-03 07:25:23'),
-(2, 'test', '', '202cb962ac59075b964b07152d234b70', '', '', '', '', '', 'tiangou/image/20170110/05373643314688247.jpg', '2017-01-04 06:47:35');
+(1, 'tiangou', '', '202cb962ac59075b964b07152d234b70', '', '', '', '', '', 'tiangou/image/20170107/05371169092870174.jpg', '2017-01-03 07:25:23'),
+(2, 'test', '', '202cb962ac59075b964b07152d234b70', '', '', '', '', '', 'tiangou/image/20170107/05371169092870174.jpg', '2017-01-04 06:47:35');
 
 -- --------------------------------------------------------
 
@@ -137,9 +166,9 @@ ALTER TABLE `tg_apkinfo`
   ADD PRIMARY KEY (`apkId`);
 
 --
--- Indexes for table `tg_comment`
+-- Indexes for table `tg_comments`
 --
-ALTER TABLE `tg_comment`
+ALTER TABLE `tg_comments`
   ADD PRIMARY KEY (`commentId`);
 
 --
@@ -147,6 +176,12 @@ ALTER TABLE `tg_comment`
 --
 ALTER TABLE `tg_contents`
   ADD PRIMARY KEY (`contentsId`);
+
+--
+-- Indexes for table `tg_followers`
+--
+ALTER TABLE `tg_followers`
+  ADD PRIMARY KEY (`followerId`);
 
 --
 -- Indexes for table `tg_user`
@@ -170,15 +205,20 @@ ALTER TABLE `tg_user_login`
 ALTER TABLE `tg_apkinfo`
   MODIFY `apkId` int(11) NOT NULL AUTO_INCREMENT COMMENT 'apk版本id';
 --
--- 使用表AUTO_INCREMENT `tg_comment`
+-- 使用表AUTO_INCREMENT `tg_comments`
 --
-ALTER TABLE `tg_comment`
-  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT COMMENT '评论id';
+ALTER TABLE `tg_comments`
+  MODIFY `commentId` int(11) NOT NULL AUTO_INCREMENT COMMENT '评论id', AUTO_INCREMENT=5;
 --
 -- 使用表AUTO_INCREMENT `tg_contents`
 --
 ALTER TABLE `tg_contents`
   MODIFY `contentsId` int(11) NOT NULL AUTO_INCREMENT COMMENT '笑话内容id', AUTO_INCREMENT=13;
+--
+-- 使用表AUTO_INCREMENT `tg_followers`
+--
+ALTER TABLE `tg_followers`
+  MODIFY `followerId` int(11) NOT NULL AUTO_INCREMENT COMMENT '粉丝id', AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `tg_user`
 --

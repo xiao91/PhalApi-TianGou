@@ -10,65 +10,22 @@ class Model_Contents extends PhalApi_Model_NotORM {
 	public function content($type) {
 
 		if ($type == 0) {
-			// $sql = 'select userId, username, userPhoto from tg_user as u left join tg_contents a on u.userId = a.userId where userId=';
-
         	$contentsORM = DI()->notorm->contents;
-        	$contents = $contentsORM->select('*')->limit(10)->fetchAll();
+        	// 查询10条数据：按时间顺序；不分类
+			$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_contents AS c ON u.userId = c.userId ORDER BY c.createTime DESC LIMIT 10';
+			$res = $contentsORM->queryAll($sql, array());
 
-			// 查询用户信息
-			$userIds = array();
-			$userORM = DI()->notorm->user;
-			foreach ($contents as $key => $value) {
-				$userIds[] = $value['userId'];
-			}
-			// 去掉重复值
-			$newUserIds = array_unique($userIds); 
-
-			$users = $userORM->select('userId, username, userPhoto')->where('userId', $newUserIds)->fetchAll();
-
-			$contentCount = count($contents);
-			$userCount = count($users);
-			for ($i=0; $i < $contentCount; $i++) { 
-				for ($j=0; $j < $userCount; $j++) { 
-					if ($contents[$i]['userId'] == $users[$j]['userId']) {
-						$contents[$i]['username'] = $users[$j]['username'];
-						$contents[$i]['userPhoto'] = $users[$j]['userPhoto'];
-					}
-				}
-			}
-
-			return $contents;
+			return $res;
 		}else {
 			// 分类查询
 			$contentsORM = DI()->notorm->contents;
-			// 默认6条
-			$contents = $contentsORM->where('type', $type)->limit(10)->fetchAll();
+        	// 查询10条数据：按时间顺序；不分类
+			$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_contents AS c ON u.userId = c.userId WHERE c.type = :type ORDER BY c.createTime DESC LIMIT 10';
+			$params = array(':type' => $type);
+			$res = $contentsORM->queryAll($sql, $params);
 
-			// 查询用户信息
-			$userIds = array();
-			$userORM = DI()->notorm->user;
-			foreach ($contents as $key => $value) {
-				$userIds[] = $value['userId'];
-			}
-			// 去掉重复值
-			$new_userIds = array_unique($userIds); 
-
-			$users = $userORM->select('userId, userName, userPhoto')->where('userId', $new_userIds)->fetchAll();
-
-			$contentCount = count($contents);
-			$userCount = count($users);
-			for ($i=0; $i < $contentCount; $i++) { 
-				for ($j=0; $j < $userCount; $j++) { 
-					if ($contents[$i]['userId'] == $users[$j]['userId']) {
-						$contents[$i]['userName'] = $users[$j]['userName'];
-						$contents[$i]['userPhoto'] = $users[$j]['userPhoto'];
-					}
-				}
-			}
-
-			return $contents;
+			return $res;
 		}
-
 		
 	}
 
@@ -79,61 +36,21 @@ class Model_Contents extends PhalApi_Model_NotORM {
 	*/
 	public function getMore($type, $currentCount) {
 		if ($type == 0) {
-        	$contentsORM = DI()->notorm->contents;
-        	$contents = $contentsORM->select('*')->limit($currentCount, 10)->fetchAll();
-
-			// 查询用户信息
-			$userIds = array();
-			$userORM = DI()->notorm->user;
-			foreach ($contents as $key => $value) {
-				$userIds[] = $value['userId'];
-			}
-			// 去掉重复值
-			$newUserIds = array_unique($userIds); 
-
-			$users = $userORM->select('userId, username, userPhoto')->where('userId', $newUserIds)->fetchAll();
-
-			$contentCount = count($contents);
-			$userCount = count($users);
-			for ($i=0; $i < $contentCount; $i++) { 
-				for ($j=0; $j < $userCount; $j++) { 
-					if ($contents[$i]['userId'] == $users[$j]['userId']) {
-						$contents[$i]['username'] = $users[$j]['username'];
-						$contents[$i]['userPhoto'] = $users[$j]['userPhoto'];
-					}
-				}
-			}
-
-			return $contents;
-		}else {
-			// 分类查询
 			$contentsORM = DI()->notorm->contents;
-			// 默认6条
-			$contents = $contentsORM->where('type', $type)->limit($currentCount, 10)->fetchAll();
+        	// 查询5条数据：按时间顺序；不分类
+			$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_contents AS c ON u.userId = c.userId ORDER BY c.createTime DESC LIMIT :start,:num';
+			$params = array(':start' => $currentCount, ':num' => 5);
+			$res = $contentsORM->queryAll($sql, $params);
 
-			// 查询用户信息
-			$userIds = array();
-			$userORM = DI()->notorm->user;
-			foreach ($contents as $key => $value) {
-				$userIds[] = $value['userId'];
-			}
-			// 去掉重复值
-			$new_userIds = array_unique($userIds); 
+			return $res;
+		}else {
+			$contentsORM = DI()->notorm->contents;
+        	// 查询5条数据：按时间顺序；不分类
+			$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_contents AS c ON u.userId = c.userId WHERE c.type = :type ORDER BY c.createTime DESC LIMIT :start,:num';
+			$params = array(':type' => $type, ':start' => $currentCount, ':num' => 5);
+			$res = $contentsORM->queryAll($sql, $params);
 
-			$users = $userORM->select('userId, userName, userPhoto')->where('userId', $new_userIds)->fetchAll();
-
-			$contentCount = count($contents);
-			$userCount = count($users);
-			for ($i=0; $i < $contentCount; $i++) { 
-				for ($j=0; $j < $userCount; $j++) { 
-					if ($contents[$i]['userId'] == $users[$j]['userId']) {
-						$contents[$i]['userName'] = $users[$j]['userName'];
-						$contents[$i]['userPhoto'] = $users[$j]['userPhoto'];
-					}
-				}
-			}
-
-			return $contents;
+			return $res;
 		}
 	}
 
