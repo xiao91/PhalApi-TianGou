@@ -16,9 +16,10 @@ class Model_Comments extends PhalApi_Model_NotORM
 	*/
 	public function addComment($contentsId, $commentDetail, $userId)
 	{	
-		// 时间
-		$time = date('y-m-d h:i:s', time());
+		// 时间：24小时制
+		$time = date('Y-m-d H:i:s', time());
 
+		// 返回的数据加上data
 		$data = array(
 			'contentsId' => $contentsId,
 			'commentDetail' => $commentDetail,
@@ -26,12 +27,46 @@ class Model_Comments extends PhalApi_Model_NotORM
 			'createTime' => $time
 		);
 
-		// 插入数据
+		// 插入数据:只是返回要入的数据，不是表中插入行的全部数据
 		$commentORM = DI()->notorm->comments;
-		$commentORM->insert($data);
-		$commentId = $commentORM->insert_id();
+		$comment = $commentORM->insert($data);
+		
+		$userORM = DI()->notorm->user;
+		$user = $userORM->select('username', 'userPhoto')->where('userId', $userId)->fetch();
 
-		return $commentId;
+		$comment['username'] = $user['username'];
+		$comment['userPhoto'] = $user['userPhoto'];
+
+		// 为了与返回评论值一样，加一个
+		$comment['userGoodCount'] = '0';
+
+		return $comment;
+	}
+
+	//对emoji表情转义
+	function emoji_encode($str){
+	    $strEncode = '';
+
+	    $length = mb_strlen($str,'utf-8');
+
+	    for ($i=0; $i < $length; $i++) {
+	        $_tmpStr = mb_substr($str,$i,1,'utf-8');    
+	        if(strlen($_tmpStr) >= 4){
+	            $strEncode .= '[[EMOJI:'.rawurlencode($_tmpStr).']]';
+	        }else{
+	            $strEncode .= $_tmpStr;
+	        }
+	    }
+
+	    return $strEncode;
+	}
+	//对emoji表情转反义
+	function emoji_decode($str){
+	    $strDecode = preg_replace_callback('|\[\[EMOJI:(.*?)\]\]|', function($matches){  
+	        return rawurldecode($matches[1]);
+	    }, $str);
+
+	    return $strDecode;
 	}
 
 
@@ -55,19 +90,19 @@ class Model_Comments extends PhalApi_Model_NotORM
 	*
 	*/
 	public function getHotAndNewComment($contentsId, $userId) {
-		$res = array('totalComment' => 0, 'userContentsCount' => 0, 'userFollowersCount' => 0, 'hot' => array(), 'new' => array());
+		$res = array('totalComment' => 0, 'userContentsCount' => 0, 'userFollowersCount' => 0, 'hotComments' => array(), 'newComments' => array());
 
 		$commentsORM = DI()->notorm->comments;
 
 		// 该条内容下的评论：查点赞数量排名前3个
-		$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_comments AS c ON u.userId = c.userId where c.contentsId = :contentsId ORDER BY c.goodCount DESC LIMIT 3';
+		$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_comments AS c ON u.userId = c.userId where c.contentsId = :contentsId ORDER BY c.userGoodCount DESC LIMIT 3';
 		$params = array(':contentsId' => $contentsId);
-		$res['hot']= $commentsORM->queryAll($sql, $params);
+		$res['hotComments']= $commentsORM->queryAll($sql, $params);
 
 		// 该条内容下的评论：根据时间排序，取前10
 		$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_comments AS c ON u.userId = c.userId where c.contentsId = :contentsId ORDER BY c.createTime DESC LIMIT 10';
 		$params = array(':contentsId' => $contentsId);
-		$res['new']= $commentsORM->queryAll($sql, $params);
+		$res['newComments']= $commentsORM->queryAll($sql, $params);
 
 		// 该条内容被评论的次数
 		$res['totalComment'] = $commentsORM->count($contentsId);
@@ -87,6 +122,20 @@ class Model_Comments extends PhalApi_Model_NotORM
 		return $res;
 	}
 
+	/**
+	* 仅获取最新的评论数据：每次10个
+	*
+	*/
+	public function getNewComment($contentsId, $createTime) {
+		$commentsORM = DI()->notorm->comments;
+
+		// 该条内容下的评论：根据时间排序，比传入的时间小，取前10
+		$sql = 'SELECT u.userPhoto, u.username, c.* FROM tg_user AS u LEFT JOIN tg_comments AS c ON u.userId = c.userId WHERE c.contentsId = :contentsId AND c.createTime < :createTime ORDER BY c.createTime DESC LIMIT 10';
+		$params = array(':contentsId' => $contentsId, ':createTime' => $createTime);
+		$res = $commentsORM->queryAll($sql, $params);
+
+		return $res;
+	}
 	
 
 }

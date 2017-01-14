@@ -33,8 +33,14 @@ return array(
             ),
         ),
 
+        'comments' => array(
+            'prefix' => 'tg_',
+            'key' => 'commentId',
+            'map' => array(
+                array('db' => 'db_tg'),
+            ),
+        ),
 
-        
         // 'user' => array(                                                //表名
         //     'prefix' => '',                                         //表名前缀
         //     'key' => 'userId',                                              //表主键名

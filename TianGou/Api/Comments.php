@@ -29,6 +29,13 @@ class Api_Comments extends PhalApi_Api {
             'updateCommentGoodCount' => array(
             	'commentId' => array('name' => 'commentId', 'type' => 'int', 'min' => 1, 'require' => true, 'desc' => '评论id'),
             ),
+
+            'getNewComment' => array(
+            	'contentsId' => array('name' => 'contentsId', 'type'=> 'int', 'require' => true, 'desc' => '对应的内容id'),
+
+            	'createTime' => array('name' => 'createTime', 'require' => true, 'desc' => '对应的评论的创建时间'),
+            ),
+
         );
 	}
 
@@ -58,20 +65,10 @@ class Api_Comments extends PhalApi_Api {
 	* 
 	*/
 	public function addComment() {
-		$rs = array('code' => 0, 'info' => '');
-
 		$domain = new Domain_Comments();
-		$commentId = $domain->addComment($this->contentsId, $this->commentDetail, $this->userId);
+		$res = $domain->addComment($this->contentsId, $this->commentDetail, $this->userId);
 
-		$rs['code'] = $commentId;
-
-		if ($commentId > 0) {
-            $rs['info'] = '评论成功';
-        }else {
-            $rs['info'] = '评论失败';
-        }
-
-        return $rs;
+        return $res;
 	}
 
 	/**
@@ -98,6 +95,20 @@ class Api_Comments extends PhalApi_Api {
         }
 
         return $rs;
+	}
+
+	/**
+	* 
+	* 获取更多最新评论
+	* 
+	* http://localhost/TianGou/Public/?service=Comments.GetNewComment&contentsId=1&createTime=2017-01-13 13:38:36
+	* 
+	*/
+	public function getNewComment() {
+		$domain = new Domain_Comments();
+		$res = $domain->getNewComment($this->contentsId, $this->createTime);
+
+		return $res;
 	}
 
 

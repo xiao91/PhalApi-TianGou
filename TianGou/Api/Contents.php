@@ -13,7 +13,7 @@ class Api_Contents extends PhalApi_Api {
 	public function getRules() {
 		return array(
             'content' => array(
-                'type' =>array('name' => 'type', 'type'=> 'int', 'require' => true, 'default' => '1', 'desc' => '类型'),
+                'type' =>array('name' => 'type', 'type'=> 'int', 'require' => true, 'default' => '0', 'desc' => '类型'),
             ),
 
             'getMore' => array(
@@ -30,6 +30,7 @@ class Api_Contents extends PhalApi_Api {
             	'contentsId' => array('name' => 'contentsId', 'type'=> 'int', 'require' => true, 'desc' => '对应的内容id'),
             ),
 
+            
         );
 	}
 

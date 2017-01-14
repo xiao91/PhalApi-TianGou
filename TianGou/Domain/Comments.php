@@ -11,9 +11,9 @@ class Domain_Comments {
 
 	public function addComment($contentsId, $commentDetail, $userId) {
 		$model = new Model_Comments();
-		$commentId = $model->addComment($contentsId, $commentDetail, $userId);
+		$comment = $model->addComment($contentsId, $commentDetail, $userId);
 
-		return $commentId;
+		return $comment;
 	}
 
 	public function updateCommentGoodCount($commentId) {
@@ -21,6 +21,13 @@ class Domain_Comments {
 		$row = $model->updateCommentGoodCount($commentId);
 
 		return $row;
+	}
+
+	public function getNewComment($contentsId, $createTime) {
+		$model = new Model_Comments();
+		$res = $model->getNewComment($contentsId, $createTime);
+
+		return $res;
 	}
 
 

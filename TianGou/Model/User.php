@@ -13,7 +13,7 @@ class Model_User extends PhalApi_Model_NotORM
     */
     public function registerWithPhone($phone, $password) {
 
-        $time = date('y-m-d h:i:s',time());
+        $time = date('Y-m-d H:i:s',time());
 
         // 第一次注册用户名称也是手机号
         $data = array(
