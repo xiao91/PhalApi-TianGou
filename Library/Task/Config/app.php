@@ -25,7 +25,7 @@ return array(
         //Runner设置，如果使用远程调度方式，请加此配置
         'runner' => array(
             'remote' => array(
-                'host' => 'http://library.phalapi.net/sky/',
+                'host' => 'http://library.phalapi.net/qm/',
                 'timeoutMS' => 3000,
             ),
         ),

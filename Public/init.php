@@ -39,6 +39,8 @@ SL('zh_cn');
 
 /** ---------------- 定制注册 可选服务组件 ---------------- **/
 
+DI()->qiniu = new Qiniu_Lite();
+
 /**
 //签名验证服务
 DI()->filter = 'PhalApi_Filter_SimpleMD5';

@@ -10,9 +10,9 @@ return array(
      * DB数据库服务器集群
      */
     'servers' => array(
-        'db_sky' => array(                         //服务器标记
+        'db_qm' => array(                         //服务器标记
             'host'      => 'localhost',             //数据库域名
-            'name'      => 'sky',               //数据库名字
+            'name'      => 'quanmin',               //数据库名字
             'user'      => 'root',                  //数据库用户名
             'password'  => '',	                    //数据库密码
             'port'      => '3306',                  //数据库端口
@@ -34,8 +34,8 @@ return array(
         ),
 
         /**
-        'sky' => array(                                                //表名
-        'prefix' => 'sky_',                                         //表名前缀
+        'qm' => array(                                                //表名
+        'prefix' => 'qm_',                                         //表名前缀
         'key' => 'id',                                              //表主键名
         'map' => array(                                             //表路由配置
         array('db' => 'db_demo'),                               //单表配置：array('db' => 服务器标记)
@@ -46,42 +46,66 @@ return array(
 
 
         'android' => array(
-            'prefix' => 'sky_',
+            'prefix' => 'qm_',
             'key' => 'apkId',
             'map' => array(
-                array('db' => 'db_sky'),
+                array('db' => 'db_qm'),
             ),
         ),
 
         'content' => array(
-            'prefix' => 'sky_',
-            'key' => 'contentId',
+            'prefix' => 'qm_',
+            'key' => 'content_id',
             'map' => array(
-                array('db' => 'db_sky'),
+                array('db' => 'db_qm'),
             ),
         ),
 
         'follower' => array(
-            'prefix' => 'sky_',
+            'prefix' => 'qm_',
             'key' => 'followerId',
             'map' => array(
-                array('db' => 'db_sky'),
+                array('db' => 'db_qm'),
             ),
         ),
 
         'user' => array(
-            'prefix' => 'sky_',
-            'key' => 'userId',
+            'prefix' => 'qm_',
+            'key' => 'user_id',
             'map' => array(
-                array('db' => 'db_sky'),
+                array('db' => 'db_qm'),
             ),
         ),
 
         'comment' => array(
-            'prefix' => 'sky_',
-            'key' => 'commentId',
+            'prefix' => 'qm_',
+            'key' => 'comment_id',
             'map' => array(
-                array('db' => 'db_sky'),
+                array('db' => 'db_qm'),
+            ),
+        ),
+
+        'good' => array(
+            'prefix' => 'qm_',
+            'key' => 'count_id',
+            'map' => array(
+                array('db' => 'db_qm'),
+            ),
+        ),
+
+        'token' => array(
+            'prefix' => 'qm_',
+            'key' => 'token_id',
+            'map' => array(
+                array('db' => 'db_qm'),
+            ),
+        ),
+
+        'focus' => array(
+            'prefix' => 'qm_',
+            'key' => 'focus_id',
+            'map' => array(
+                array('db' => 'db_qm'),
             ),
         ),
 

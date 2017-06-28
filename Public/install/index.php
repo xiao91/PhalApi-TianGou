@@ -133,7 +133,7 @@ case 3:
 
         //访问入口
         $appPublicPath = dirname(__FILE__) . implode(D_S, array('', '..', strtolower($project), ));
-        $demoPublicPath = dirname(__FILE__) . implode(D_S, array('', '..', 'sky',));
+        $demoPublicPath = dirname(__FILE__) . implode(D_S, array('', '..', 'qm',));
 
         mkdir($appPublicPath);
 
@@ -207,7 +207,7 @@ return array(
         ),
 
         /**
-        'sky' => array(                                                //表名
+        'qm' => array(                                                //表名
             'prefix' => '{prefix}',                                         //表名前缀
             'key' => 'id',                                              //表主键名
             'map' => array(                                             //表路由配置

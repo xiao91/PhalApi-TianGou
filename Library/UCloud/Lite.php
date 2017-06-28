@@ -35,7 +35,7 @@ class UCloud_Lite {
     private $upload_file;
 
     //文件存储的默认路径
-    private $default_path = 'tiangou';
+    private $default_path = 'QuanMin';
 
     //文件存储路径
     private $save_path;

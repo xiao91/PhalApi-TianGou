@@ -77,7 +77,7 @@ class PhpUnderControl_PhalApiCryptRSAMultiPri2Pub_Test extends PHPUnit_Framework
     }
 
     /**
-     * sky
+     * demo
      */
     public function testDecryptAfterEncrypt()
     {

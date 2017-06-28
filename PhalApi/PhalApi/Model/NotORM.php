@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PhalApi_Model_NotORM 基于NotORM的Model基类
  *
@@ -12,12 +13,13 @@
  * @link        http://www.phalapi.net/
  * @author      dogstar <chanzonghuang@gmail.com> 2015-02-22
  */
-
-class PhalApi_Model_NotORM implements PhalApi_Model {
+class PhalApi_Model_NotORM implements PhalApi_Model
+{
 
     protected static $tableKeys = array();
 
-    public function get($id, $fields = '*') {
+    public function get($id, $fields = '*')
+    {
         $needFields = is_array($fields) ? implode(',', $fields) : $fields;
         $notorm = $this->getORM($id);
 
@@ -30,7 +32,8 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
         return $rs;
     }
 
-    public function insert($data, $id = NULL) {
+    public function insert($data, $id = NULL)
+    {
         $this->formatExtData($data);
 
         $notorm = $this->getORM($id);
@@ -39,7 +42,8 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
         return $notorm->insert_id();
     }
 
-    public function update($id, $data) {
+    public function update($id, $data)
+    {
         $this->formatExtData($data);
 
         $notorm = $this->getORM($id);
@@ -48,7 +52,8 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
         return $notorm->where($this->getTableKey($table), $id)->update($data);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $notorm = $this->getORM($id);
 
         $table = $this->getTableName($id);
@@ -58,7 +63,8 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
     /**
      * 对LOB的ext_data字段进行格式化(序列化)
      */
-    protected function formatExtData(&$data) {
+    protected function formatExtData(&$data)
+    {
         if (isset($data['ext_data'])) {
             $data['ext_data'] = json_encode($data['ext_data']);
         }
@@ -67,7 +73,8 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
     /**
      * 对LOB的ext_data字段进行解析(反序列化)
      */
-    protected function parseExtData(&$data) {
+    protected function parseExtData(&$data)
+    {
         if (isset($data['ext_data'])) {
             $data['ext_data'] = json_decode($data['ext_data'], true);
         }
@@ -75,15 +82,16 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
 
     /**
      * 根据主键值返回对应的表名，注意分表的情况
-     * 
+     *
      * 默认表名为：[表前缀] + 全部小写的匹配表名
      *
      * 在以下场景下，需要重写此方法以指定表名
      * + 1. 自动匹配的表名与实际表名不符
-     * + 2. 存在分表 
+     * + 2. 存在分表
      * + 3. Model类名不含有Model_
      */
-    protected function getTableName($id) {
+    protected function getTableName($id)
+    {
         $className = get_class($this);
         $pos = strpos($className, 'Model');
 
@@ -97,29 +105,32 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
      * - 考虑到配置中的表主键不一定是id，所以这里将默认自动装配数据库配置并匹配对应的主键名
      * - 如果不希望因自动匹配所带来的性能问题，可以在每个实现子类手工返回对应的主键名
      * - 注意分表的情况
-     * 
+     *
      * @param string $table 表名/分表名
      * @return string 主键名
      */
-    protected function getTableKey($table) {
-        if (empty(self::$tableKeys)) {
+    protected function getTableKey($table)
+    {
+        if (empty(static::$tableKeys)) {
             $this->loadTableKeys();
         }
 
-        return isset(self::$tableKeys[$table]) ? self::$tableKeys[$table] : self::$tableKeys['__default__'];
+        return isset(static::$tableKeys[$table]) ? static::$tableKeys[$table] : static::$tableKeys['__default__'];
     }
 
     /**
      * 快速获取ORM实例，注意每次获取都是新的实例
-     * @param string/int $id
+     * @param string /int $id
      * @return NotORM_Result
      */
-    protected function getORM($id = NULL) {
+    protected function getORM($id = NULL)
+    {
         $table = $this->getTableName($id);
         return DI()->notorm->$table;
     }
 
-    protected function loadTableKeys() {
+    protected function loadTableKeys()
+    {
         $tables = DI()->config->get('dbs.tables');
         if (empty($tables)) {
             throw new PhalApi_Exception_InternalServerError(T('dbs.tables should not be empty'));
@@ -127,11 +138,11 @@ class PhalApi_Model_NotORM implements PhalApi_Model {
 
         foreach ($tables as $tableName => $tableConfig) {
             if (isset($tableConfig['start']) && isset($tableConfig['end'])) {
-                for ($i = $tableConfig['start']; $i <= $tableConfig['end']; $i ++) {
-                    self::$tableKeys[$tableName . '_' . $i] = $tableConfig['key'];
+                for ($i = $tableConfig['start']; $i <= $tableConfig['end']; $i++) {
+                    static::$tableKeys[$tableName . '_' . $i] = $tableConfig['key'];
                 }
             } else {
-                self::$tableKeys[$tableName] = $tableConfig['key'];
+                static::$tableKeys[$tableName] = $tableConfig['key'];
             }
         }
     }

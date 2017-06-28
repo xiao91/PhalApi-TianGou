@@ -37,7 +37,7 @@ class PhpUnderControl_PhalApiDBNotORM_Test extends PHPUnit_Framework_TestCase
     {
         $demo = $this->notorm->$table;
         $this->assertNotNull($demo);
-        //var_dump($sky);
+        //var_dump($demo);
 
         $rs = $demo->fetchAll();
         //var_dump($rs);
@@ -47,10 +47,10 @@ class PhpUnderControl_PhalApiDBNotORM_Test extends PHPUnit_Framework_TestCase
     public function provideTable()
     {
         return array(
-            array('sky'),
-            array('sky_0'),
-            array('sky_1'),
-            array('sky_3'),
+            array('demo'),
+            array('demo_0'),
+            array('demo_1'),
+            array('demo_3'),
         );
     }
 
@@ -220,7 +220,7 @@ class PhpUnderControl_PhalApiDBNotORM_Test extends PHPUnit_Framework_TestCase
         //should not use in this way
         $sql = 'SELECT * FROM tbl_demo WHERE id = ? OR id = :id';
         $params = array(1, ':id' => 2);
-        //$rows = $this->notorm->sky->queryRows($sql, $params);
+        //$rows = $this->notorm->demo->queryRows($sql, $params);
     }
 
     public function testParametersMixed()

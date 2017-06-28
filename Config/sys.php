@@ -7,7 +7,7 @@ return array(
 	/**
 	 * 默认环境配置
 	 */
-	'debug' => true,
+	'debug' => false,
 
 	/**
 	 * MC缓存服务器参考配置

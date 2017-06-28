@@ -37,7 +37,7 @@ return array(
                 array('db' => 'DB_A'),
             ),
         ),
-        'sky' => array(
+        'demo' => array(
             'prefix' => 'tbl_',
             'key' => 'id',
             'map' => array(

@@ -36,7 +36,7 @@ require_once PHALAPI_ROOT . DIRECTORY_SEPARATOR . 'NotORM' . DIRECTORY_SEPARATOR
  *                   array('start' => 0, 'end' => 2, 'db' => 'db_demo'),        //默认区间
  *               ),
  *           ),
- *           'sky' => array(                                                   //自定义
+ *           'demo' => array(                                                   //自定义
  *               'prefix' => 'tbl_',
  *               'key' => 'id',
  *               'map' => array(
@@ -123,7 +123,7 @@ class PhalApi_DB_NotORM /** implements PhalApi_DB */ {
     }
 
     public function __set($name, $value) {
-        foreach ($this->_notorms as $key => $notorm) {
+        foreach ($this->_notorms as $notorm) {
             $notorm->$name = $value;
         }
     }
